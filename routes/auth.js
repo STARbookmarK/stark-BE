@@ -2,6 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 
 const router = express.Router();
+const cookieExpires = 1000*60*60*24*60; // 60 day
 
 router.post('/api/login', (req, res) => {
 	// 로그인
@@ -29,7 +30,7 @@ router.post('/api/login', (req, res) => {
 			issuer: 'stark'
 		});
 		res.cookie('accessToken', accessToken, {
-			maxAge: 1000*60*60, // 1 hour
+			maxAge: cookieExpires,
 			httpOnly: true // javascript 로 쿠키 접근 불가
 		});
 		if(autoLogin){
@@ -42,7 +43,7 @@ router.post('/api/login', (req, res) => {
 				issuer: 'stark'
 			});
 			res.cookie('refreshToken', refreshToken, {
-				maxAge: 1000*60*60*24*60, // 60 day
+				maxAge: cookieExpires, // 60 day
 				httpOnly: true // javascript 로 쿠키 접근 불가
 			});
 		}
@@ -78,7 +79,7 @@ router.get('/api/login', (req, res) => {
 					issuer: 'stark'
 				});
 				res.cookie('accessToken', accessToken, {
-					maxAge: 1000*60*60,
+					maxAge: cookieExpires,
 					httpOnly: true
 				});
 				console.log('token 재발급 됨');
@@ -95,14 +96,14 @@ router.get('/api/login', (req, res) => {
 				}
 				return res.status(401).json({
 					code: 401,
-					message: '유효하지 않은 토큰입니다.'
+					message: '유효하지 않은 refresh 토큰입니다.'
 				});
 			}
 		}
 		// access token 의 예외처리
 		return res.status(401).json({
 			code: 401,
-			message: '유효하지 않은 토큰입니다.'
+			message: '유효하지 않은 access 토큰입니다.'
 		});
 	}
 });
