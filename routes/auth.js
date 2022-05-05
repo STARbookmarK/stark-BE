@@ -82,16 +82,14 @@ router.get('/api/login', (req, res) => {
 					maxAge: cookieExpires,
 					httpOnly: true
 				});
-				console.log('token 재발급 됨');
 				// 사용자 정보 전달을 위한 반환값이므로 access, refresh 어느 토큰의 값을 반환해줘도 상관이 없음.
 				return res.status(200).json(decode);
 			}
 			catch (err) {
-				// refresh token 의 예외처리
 				if (err.name === 'TokenExpiredError') {
 					return res.status(419).json({
 						code: 419,
-						message: '토큰이 만료되었습니다.'
+						message: 'refresh 토큰이 만료되었습니다.'
 					});
 				}
 				return res.status(401).json({
@@ -100,7 +98,6 @@ router.get('/api/login', (req, res) => {
 				});
 			}
 		}
-		// access token 의 예외처리
 		return res.status(401).json({
 			code: 401,
 			message: '유효하지 않은 access 토큰입니다.'
