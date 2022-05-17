@@ -17,14 +17,6 @@ const __dirname = path.resolve();
 const app = express();
 app.set('port', '8081');
 
-// global variable
-const user = [
-  {id: 'wjdgus', pw: 'wjdgus', name: '정현'},
-  {id: 'alswl', pw: 'alswl', name: '민지'},
-  {id: 'ehddlr', pw: 'ehddlr', name: '동익'}
-];
-global.user = user;
-
 // morgan
 if (process.env.NODE_ENV === 'production') app.use(morgan('combined'));
 else app.use(morgan('dev'));

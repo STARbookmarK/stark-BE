@@ -1,29 +1,35 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import db from '../models/index.js';
+const { User } = db;
 
 const router = express.Router();
 const cookieExpires = 1000*60*60*24*60; // 60 day
 
-router.post('/api/login', (req, res) => {
+router.post('/api/login', async (req, res) => {
 	// 로그인
 	const { id, pw, autoLogin } = req.body;
-	try {
-		const userIdx = global.user.findIndex(x => x.id === id);
-		if(userIdx === -1) {
+	try{
+		const user = await User.findOne({
+			attributes: ['user_id', 'password', 'nickname'],
+			where: { user_id: id }
+		})
+		if(!user){
 			return res.status(401).json({
 				code: 401,
 				message: '가입되지 않은 회원입니다.'
 			});
 		}
-		if(global.user[userIdx].pw !== pw){
+		if(user.dataValues.password !== pw){
 			return res.status(401).json({
 				code: 401,
 				message: '비밀번호가 일치하지 않습니다.'
 			});
 		}
+		const name = user.dataValues.nickname;
 		const accessToken = jwt.sign({
 			id: id,
-			name: global.user[userIdx].name,
+			name: name,
 			tokenType: 'accessToken'
 		}, process.env.JWT_SECRET, {
 			expiresIn: '1h',
@@ -36,7 +42,7 @@ router.post('/api/login', (req, res) => {
 		if(autoLogin){
 			const refreshToken = jwt.sign({
 				id: id,
-				name: global.user[userIdx].name,
+				name: name,
 				tokenType: 'refreshToken'
 			}, process.env.JWT_SECRET, {
 				expiresIn: '60d',
@@ -52,6 +58,7 @@ router.post('/api/login', (req, res) => {
 			message: '토큰이 발급되었습니다.'
 		});
 	} catch (err) {
+		console.log('error', err);
 		return res.status(500).json({
 			code: 500,
 			message: '서버 에러'
