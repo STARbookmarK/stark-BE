@@ -1,8 +1,8 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import db from '../models/index.js';
-const { User } = db;
+import models from '../models/index.js';
 
+const User = models.user;
 const router = express.Router();
 const cookieExpires = 1000*60*60*24*60; // 60 day
 

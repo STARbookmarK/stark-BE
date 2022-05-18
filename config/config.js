@@ -14,6 +14,7 @@ export default {
     "password": process.env.SEQUELIZE_PASSWORD,
     "database": "stark",
     "host": "localhost",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "logging": false
   }
 }

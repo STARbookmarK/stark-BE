@@ -1,15 +1,9 @@
 import Sequelize from 'sequelize';
 import configFile from '../config/config.js';
-import User from './user.js';
+import initModels from './init-models.js';
+
 const env = process.env.NODE_ENV || 'development';
 const config = configFile[env];
-const db = {};
-const sequelize = new Sequelize(config.database, config.usernae, config.password, config);
+const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
-db.sequelize = sequelize;
-db.User = User;
-
-User.init(sequelize);
-User.associate(db);
-
-export default db;
+export default initModels(sequelize);
