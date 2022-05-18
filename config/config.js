@@ -4,9 +4,9 @@ dotenv.config();
 export default {
   "development": {
     "username": "root",
-    "password": "root",
+    "password": process.env.SEQUELIZE_PASSWORD,
     "database": "stark",
-    "host": "localhost",
+    "host": "52.11.219.14",
     "dialect": "mysql"
   },
   "production": {
