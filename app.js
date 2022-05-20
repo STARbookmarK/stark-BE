@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import authRouter from './routes/auth.js';
+import monitorRouter from './routes/monitor.js';
 
 // .env
 dotenv.config();
@@ -30,6 +31,7 @@ app.use(cors());
 
 // backend router
 app.use('/', authRouter);
+app.use('/', monitorRouter);
 
 // create server
 app.listen(app.get('port'), () => {
