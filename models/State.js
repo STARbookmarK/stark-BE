@@ -1,44 +1,30 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class User extends Model {
+export default class State extends Model {
   static init(sequelize, DataTypes) {
   return super.init({
-    user_id: {
-      type: DataTypes.STRING(45),
+    state_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    nickname: {
+    title: {
       type: DataTypes.STRING(45),
       allowNull: false
     },
-    password: {
+    User_user_id: {
       type: DataTypes.STRING(45),
-      allowNull: false
-    },
-    info: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    },
-    show: {
-      type: DataTypes.TINYINT,
       allowNull: false,
-      defaultValue: 1
-    },
-    hashtagshow: {
-      type: DataTypes.TINYINT,
-      allowNull: false,
-      defaultValue: 1
-    },
-    hashtagcategory: {
-      type: DataTypes.TINYINT,
-      allowNull: false,
-      defaultValue: 1
+      primaryKey: true,
+      references: {
+        model: 'User',
+        key: 'user_id'
+      }
     }
   }, {
     sequelize,
-    tableName: 'User',
+    tableName: 'State',
     timestamps: false,
     underscored: false,
     charset: 'utf8',
@@ -49,7 +35,15 @@ export default class User extends Model {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "user_id" },
+          { name: "state_id" },
+          { name: "User_user_id" },
+        ]
+      },
+      {
+        name: "fk_State_User1_idx",
+        using: "BTREE",
+        fields: [
+          { name: "User_user_id" },
         ]
       },
     ]

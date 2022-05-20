@@ -1,44 +1,42 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class User extends Model {
+export default class Bookmark extends Model {
   static init(sequelize, DataTypes) {
   return super.init({
-    user_id: {
-      type: DataTypes.STRING(45),
+    bookmark_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    nickname: {
+    title: {
       type: DataTypes.STRING(45),
       allowNull: false
     },
-    password: {
-      type: DataTypes.STRING(45),
-      allowNull: false
-    },
-    info: {
+    image: {
       type: DataTypes.STRING(45),
       allowNull: true
     },
-    show: {
-      type: DataTypes.TINYINT,
-      allowNull: false,
-      defaultValue: 1
+    description: {
+      type: DataTypes.STRING(45),
+      allowNull: true
     },
-    hashtagshow: {
-      type: DataTypes.TINYINT,
-      allowNull: false,
-      defaultValue: 1
+    rate: {
+      type: DataTypes.STRING(45),
+      allowNull: true
     },
-    hashtagcategory: {
-      type: DataTypes.TINYINT,
+    User_user_id: {
+      type: DataTypes.STRING(45),
       allowNull: false,
-      defaultValue: 1
+      primaryKey: true,
+      references: {
+        model: 'User',
+        key: 'user_id'
+      }
     }
   }, {
     sequelize,
-    tableName: 'User',
+    tableName: 'Bookmark',
     timestamps: false,
     underscored: false,
     charset: 'utf8',
@@ -49,7 +47,15 @@ export default class User extends Model {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "user_id" },
+          { name: "bookmark_id" },
+          { name: "User_user_id" },
+        ]
+      },
+      {
+        name: "fk_Bookmark_User_idx",
+        using: "BTREE",
+        fields: [
+          { name: "User_user_id" },
         ]
       },
     ]

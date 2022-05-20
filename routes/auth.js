@@ -2,7 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import models from '../models/index.js';
 
-const User = models.user;
+const User = models.User;
 const router = express.Router();
 const cookieExpires = 1000*60*60*24*60; // 60 day
 
@@ -58,7 +58,6 @@ router.post('/api/login', async (req, res) => {
 			message: '토큰이 발급되었습니다.'
 		});
 	} catch (err) {
-		console.log('error', err);
 		return res.status(500).json({
 			code: 500,
 			message: '서버 에러'
@@ -118,7 +117,68 @@ router.get('/api/logout', (req, res) => {
 	res.status(200).json({
 		code: 200,
 		message: '로그아웃 되었습니다.'
-	})
+	});
+});
+
+router.post('/api/register', async (req, res) => {
+	const { id, password, nickname, info} = req.body;
+	try{
+		await User.create({
+			user_id: id,
+			password: password,
+			nickname: nickname,
+			info: info
+		})
+		return res.status(200).json({
+			code: 200,
+			message: '회원가입 되었습니다'
+		});
+	} catch (err) {
+		return res.status(500).json({
+			code: 500,
+			message: '서버 에러'
+		});
+	}
+});
+
+router.get('/api/register/id/:userid', async (req, res) => {
+	// id 중복 검사
+	const id = req.params.userid;
+	try {
+		const user = await User.findOne({
+			attributes: ['user_id'],
+			where: { user_id: id }
+		})
+		return res.status(200).json({
+			code: 200,
+			valid: user ? false : true
+		});
+	} catch (err) {
+		return res.status(500).json({
+			code: 500,
+			message: '서버 에러'
+		});
+	}
+});
+
+router.get('/api/register/name/:nickname', async (req, res) => {
+	// nickname 중복 검사
+	const nickname = req.params.nickname;
+	try {
+		const user = await User.findOne({
+			attributes: ['user_id'],
+			where: { nickname: nickname }
+		})
+		return res.status(200).json({
+			code: 200,
+			valid: user ? false : true
+		});
+	} catch (err) {
+		return res.status(500).json({
+			code: 500,
+			message: '서버 에러'
+		});
+	}
 });
 
 export default router;
