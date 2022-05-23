@@ -1,11 +1,14 @@
 import SequelizeAuto from 'sequelize-auto';
-import configFile from './config/config.js';
+import configFile from '../config/config.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const env = process.env.NODE_ENV || 'development';
 const config = configFile[env];
 const auto = new SequelizeAuto(config.database, config.username, config.password, {
   host: config.host,
   port: '3306',
+  directory: './src/models/out',
   dialect: config.dialect,
   lang: 'esm',
   additional: {

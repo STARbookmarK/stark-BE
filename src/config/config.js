@@ -16,5 +16,8 @@ export default {
     "host": "localhost",
     "dialect": "mysql",
     "logging": false
+  },
+  "jwt": {
+    "secret": process.env.JWT_SECRET
   }
 }

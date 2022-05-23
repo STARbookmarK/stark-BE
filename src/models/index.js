@@ -1,6 +1,8 @@
 import Sequelize from 'sequelize';
 import configFile from '../config/config.js';
-import initModels from './init-models.js';
+import initModels from './out/init-models.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const env = process.env.NODE_ENV || 'development';
 const config = configFile[env];

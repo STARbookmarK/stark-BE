@@ -5,8 +5,8 @@ import path from 'path';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import authRouter from './routes/auth.js';
-import monitorRouter from './routes/monitor.js';
+import authRouter from './routes/auth.route.js';
+import monitorRouter from './routes/monitor.route.js';
 
 // .env
 dotenv.config();

@@ -1,11 +1,13 @@
 {
   "name": "backend",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "nodemon app",
-    "start": "cross-env NODE_ENV=production forever start app.js"
+    "dev": "nodemon ./src/app.js",
+    "start": "cross-env NODE_ENV=production forever start ./src/app.js",
+    "orm": "node ./src/models/orm.js",
+    "doc": "jsdoc -c jsdoc.config.json ."
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -24,5 +26,9 @@
     "sequelize-auto": "^0.8.8",
     "sequelize-cli": "^6.4.1",
     "serve-favicon": "^2.5.0"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.6.10",
+    "jsdoc-route-plugin": "^0.1.0"
   }
 }
