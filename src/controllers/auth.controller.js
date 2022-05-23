@@ -8,16 +8,16 @@ const cookieOption = {
 }
 
 const login = async (req, res) => {
-  try{
+  try {
     const { id, pw, autoLogin } = req.body;
     const name = await authService.login(id, pw);
     const tokens = tokenService.generateAuthToken(id, name, autoLogin);
     res.cookie('accessToken', tokens.access, cookieOption);
-    if(tokens.refresh) res.cookie('refreshToken', tokens.refresh, cookieOption);
-		return res.status(200).json({
-			code: 200,
-			message: '토큰이 발급되었습니다.'
-		});
+    if (tokens.refresh) res.cookie('refreshToken', tokens.refresh, cookieOption);
+    return res.status(200).json({
+      code: 200,
+      message: '토큰이 발급되었습니다.'
+    });
   } catch (err) {
     return res.status(err.statusCode).json({
       code: err.statusCode,
@@ -32,20 +32,20 @@ const loginChk = async (req, res) => {
 
 const logout = (req, res) => {
   res.clearCookie('accessToken');
-	res.clearCookie('refreshToken');
-	res.status(200).json({
-		code: 200,
-		message: '로그아웃 되었습니다.'
-	});
+  res.clearCookie('refreshToken');
+  res.status(200).json({
+    code: 200,
+    message: '로그아웃 되었습니다.'
+  });
 }
 
 const register = async (req, res) => {
   try {
     await userService.createUser(req.body);
     return res.status(200).json({
-			code: 200,
-			message: '회원가입 되었습니다'
-		});
+      code: 200,
+      message: '회원가입 되었습니다'
+    });
   } catch (err) {
     return res.status(err.statusCode).json({
       code: err.statusCode,
@@ -55,32 +55,32 @@ const register = async (req, res) => {
 }
 
 const idDupChk = async (req, res) => {
-  try{
+  try {
     const user = await userService.getUserById(req.params.userid);
     return res.status(200).json({
-			code: 200,
-			valid: user ? false : true
-		});
+      code: 200,
+      valid: user ? false : true
+    });
   } catch (err) {
     return res.status(500).json({
-			code: 500,
-			message: '서버 에러'
-		});
+      code: 500,
+      message: '서버 에러'
+    });
   }
 }
 
 const nicknameDupChk = async (req, res) => {
-  try{
+  try {
     const user = await userService.getUserByNickname(req.params.nickname);
     return res.status(200).json({
-			code: 200,
-			valid: user ? false : true
-		});
+      code: 200,
+      valid: user ? false : true
+    });
   } catch (err) {
     return res.status(500).json({
-			code: 500,
-			message: '서버 에러'
-		});
+      code: 500,
+      message: '서버 에러'
+    });
   }
 }
 

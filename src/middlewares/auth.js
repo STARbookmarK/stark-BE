@@ -10,17 +10,17 @@ const cookieOption = {
 // controller 와 같은 위치
 const verifyToken = (req, res, next) => {
   try {
-		req.decode = jwt.verify(req.cookies.accessToken, configFile.jwt.secret);
-		if(req.decode.tokenType !== 'accessToken') throw '사용할 수 없는 토큰입니다.';
+    req.decode = jwt.verify(req.cookies.accessToken, configFile.jwt.secret);
+    if (req.decode.tokenType !== 'accessToken') throw '사용할 수 없는 토큰입니다.';
     return next();
   } catch (err) {
-		if (err.name === 'TokenExpiredError') {
+    if (err.name === 'TokenExpiredError') {
       // refresh token 이 유효하면 access token 재발급
-      try{
-				const decode = jwt.verify(req.cookies.refreshToken, configFile.jwt.secret);
+      try {
+        const decode = jwt.verify(req.cookies.refreshToken, configFile.jwt.secret);
         const { id, name } = decode;
         const accessToken = tokenService.generateToken(id, name, 'accessToken', '1h');
-				res.cookie('accessToken', accessToken, cookieOption);
+        res.cookie('accessToken', accessToken, cookieOption);
         // 사용자 정보 전달을 위한 반환값이므로 access, refresh 어느 토큰의 값을 반환해줘도 상관이 없음.
         return next();
       } catch (err) {
@@ -37,9 +37,9 @@ const verifyToken = (req, res, next) => {
       }
     }
     return res.status(401).json({
-			code: 401,
-			message: '유효하지 않은 access 토큰입니다.'
-		});
+      code: 401,
+      message: '유효하지 않은 access 토큰입니다.'
+    });
   }
 }
 

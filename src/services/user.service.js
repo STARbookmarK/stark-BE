@@ -16,7 +16,7 @@ const getUserByNickname = async (nickname) => {
 }
 
 const createUser = async (userBody) => {
-	const { id, password, nickname, info } = userBody;
+  const { id, password, nickname, info } = userBody;
   return User.create({
     user_id: id,
     password: password,
