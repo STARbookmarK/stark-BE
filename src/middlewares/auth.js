@@ -17,11 +17,10 @@ const verifyToken = (req, res, next) => {
     if (err.name === 'TokenExpiredError') {
       // refresh token 이 유효하면 access token 재발급
       try {
-        const decode = jwt.verify(req.cookies.refreshToken, configFile.jwt.secret);
-        const { id, name } = decode;
+        req.decode = jwt.verify(req.cookies.refreshToken, configFile.jwt.secret);
+        const { id, name } = req.decode;
         const accessToken = tokenService.generateToken(id, name, 'accessToken', '1h');
         res.cookie('accessToken', accessToken, cookieOption);
-        // 사용자 정보 전달을 위한 반환값이므로 access, refresh 어느 토큰의 값을 반환해줘도 상관이 없음.
         return next();
       } catch (err) {
         if (err.name === 'TokenExpiredError') {
