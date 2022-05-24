@@ -19,7 +19,12 @@ const generateAuthToken = (id, name, autoLogin) => {
   };
 }
 
+const verifyToken = (token) => {
+  return jwt.decode(token, config.jwt.secret);
+}
+
 export default {
   generateToken,
-  generateAuthToken
+  generateAuthToken,
+  verifyToken
 };

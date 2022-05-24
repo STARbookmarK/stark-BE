@@ -4,10 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "nodemon ./src/app.js",
-    "start": "cross-env NODE_ENV=production forever start ./src/app.js",
+    "dev": "nodemon ./src/index.js",
+    "start": "cross-env NODE_ENV=production forever start ./src/index.js",
     "orm": "node ./src/models/orm.js",
-    "doc": "jsdoc -c jsdoc.config.json ."
+    "doc": "jsdoc -c jsdoc.config.json .",
+    "test": "jest --detectOpenHandles --forceExit"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -27,10 +28,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.18.0",
+    "@babel/node": "^7.17.10",
     "@babel/preset-env": "^7.18.0",
-    "babel-jest": "^28.1.0",
     "jest": "^28.1.0",
     "jsdoc": "^3.6.10",
-    "jsdoc-route-plugin": "^0.1.0"
+    "jsdoc-route-plugin": "^0.1.0",
+    "supertest": "^6.2.3"
   }
 }

@@ -30,11 +30,6 @@ app.use(cors());
 app.use('/', authRouter);
 app.use('/', monitorRouter);
 
-// create server
-app.listen(app.get('port'), () => {
-  console.log(app.get('port') + ' 빈 포트에서 대기 중');
-});
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -44,3 +39,5 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   console.log(err.message);
 });
+
+export default app;

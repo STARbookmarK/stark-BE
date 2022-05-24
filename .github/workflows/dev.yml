@@ -22,7 +22,7 @@ jobs:
             git pull origin develop
             git checkout develop
             npm install
-            forever stop ./src/app.js
+            forever stop ./src/index.js
             npm start
 
       - name: action-slack

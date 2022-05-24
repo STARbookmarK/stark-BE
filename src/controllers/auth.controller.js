@@ -10,10 +10,7 @@ const login = async (req, res) => {
     const tokens = tokenService.generateAuthToken(id, name, autoLogin);
     res.cookie('accessToken', tokens.access, config.cookie.option);
     if (tokens.refresh) res.cookie('refreshToken', tokens.refresh, config.cookie.option);
-    return res.status(200).json({
-      code: 200,
-      message: '토큰이 발급되었습니다.'
-    });
+    return res.status(200).json({ tokens });
   } catch (err) {
     return res.status(err.statusCode).json({
       code: err.statusCode,

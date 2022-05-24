@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import config from '../config/config.js';
 import tokenService from '../services/token.service.js';
 
@@ -7,14 +6,14 @@ import tokenService from '../services/token.service.js';
 // req.decode 에 쿠키를 담은 후 다음 미들웨어로 보냄
 const verifyToken = (req, res, next) => {
   try {
-    req.decode = jwt.verify(req.cookies.accessToken, config.jwt.secret);
+    req.decode = tokenService.verifyToken(req.cookies.accessToken);
     if (req.decode.tokenType !== 'accessToken') throw '사용할 수 없는 토큰입니다.';
     return next();
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
       // refresh token 이 유효하면 access, refresh token 재발급
       try {
-        req.decode = jwt.verify(req.cookies.refreshToken, config.jwt.secret);
+        req.decode = tokenService.verifyToken(req.cookies.refreshToken);
         const { id, name } = req.decode;
         const tokens = tokenService.generateAuthToken(id, name, true);
         res.cookie('accessToken', tokens.accessToken, config.cookie.option);
