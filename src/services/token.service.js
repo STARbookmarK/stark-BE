@@ -1,22 +1,21 @@
-import ApiError from '../utils/ApiError.js';
 import jwt from 'jsonwebtoken';
-import configFile from '../config/config.js';
+import config from '../config/config.js';
 
-const generateToken = (id, name, type, expiresIn) => {
+const generateToken = (id, name, type, expires) => {
   return jwt.sign({
     id: id,
     name: name,
     tokenType: type
-  }, configFile.jwt.secret, {
-    expiresIn: expiresIn,
+  }, config.jwt.secret, {
+    expiresIn: expires,
     issuer: 'stark'
   });
 }
 
 const generateAuthToken = (id, name, autoLogin) => {
   return {
-    access: generateToken(id, name, 'accessToken', '1h'),
-    refresh: autoLogin ? generateToken(id, name, 'refreshToken', '60d') : null
+    access: generateToken(id, name, 'accessToken', config.jwt.expires.access),
+    refresh: autoLogin ? generateToken(id, name, 'refreshToken', config.jwt.expires.refresh) : null
   };
 }
 

@@ -1,15 +1,13 @@
 import SequelizeAuto from 'sequelize-auto';
-import configFile from '../config/config.js';
-import dotenv from 'dotenv';
-dotenv.config();
+import config from '../config/config.js';
 
-const env = process.env.NODE_ENV || 'development';
-const config = configFile[env];
-const auto = new SequelizeAuto(config.database, config.username, config.password, {
-  host: config.host,
+const env = config.env || 'development';
+const mysql = config.mysql[env];
+const auto = new SequelizeAuto(mysql.database, mysql.username, mysql.password, {
+  host: mysql.host,
   port: '3306',
   directory: './src/models/out',
-  dialect: config.dialect,
+  dialect: mysql.dialect,
   lang: 'esm',
   additional: {
     timestamps: false,

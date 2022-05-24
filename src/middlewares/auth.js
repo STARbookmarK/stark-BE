@@ -1,26 +1,24 @@
 import jwt from 'jsonwebtoken';
-import configFile from '../config/config.js';
+import config from '../config/config.js';
 import tokenService from '../services/token.service.js';
 
-const cookieOption = {
-  maxAge: 1000*60*60*24*60, // 60 day
-  httpOnly: true
-}
-
-// controller 와 같은 위치
+// controller 와 같은 계층에 놓인 미들웨어
+// 토큰 유효성 검사를 진행하고 사용 가능한 토큰이면
+// req.decode 에 쿠키를 담은 후 다음 미들웨어로 보냄
 const verifyToken = (req, res, next) => {
   try {
-    req.decode = jwt.verify(req.cookies.accessToken, configFile.jwt.secret);
+    req.decode = jwt.verify(req.cookies.accessToken, config.jwt.secret);
     if (req.decode.tokenType !== 'accessToken') throw '사용할 수 없는 토큰입니다.';
     return next();
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
-      // refresh token 이 유효하면 access token 재발급
+      // refresh token 이 유효하면 access, refresh token 재발급
       try {
-        req.decode = jwt.verify(req.cookies.refreshToken, configFile.jwt.secret);
+        req.decode = jwt.verify(req.cookies.refreshToken, config.jwt.secret);
         const { id, name } = req.decode;
-        const accessToken = tokenService.generateToken(id, name, 'accessToken', '1h');
-        res.cookie('accessToken', accessToken, cookieOption);
+        const tokens = tokenService.generateAuthToken(id, name, true);
+        res.cookie('accessToken', tokens.accessToken, config.cookie.option);
+        res.cookie('refreshToekn', tokens.refreshToken, config.cookie.option);
         return next();
       } catch (err) {
         if (err.name === 'TokenExpiredError') {

@@ -1,19 +1,15 @@
-import authService from "../services/auth.service.js";
-import tokenService from "../services/token.service.js";
-import userService from "../services/user.service.js";
-
-const cookieOption = {
-  maxAge: 1000*60*60*24*60, // 60 day
-  httpOnly: true
-}
+import authService from '../services/auth.service.js';
+import tokenService from '../services/token.service.js';
+import userService from '../services/user.service.js';
+import config from '../config/config.js';
 
 const login = async (req, res) => {
   try {
     const { id, pw, autoLogin } = req.body;
     const name = await authService.login(id, pw);
     const tokens = tokenService.generateAuthToken(id, name, autoLogin);
-    res.cookie('accessToken', tokens.access, cookieOption);
-    if (tokens.refresh) res.cookie('refreshToken', tokens.refresh, cookieOption);
+    res.cookie('accessToken', tokens.access, config.cookie.option);
+    if (tokens.refresh) res.cookie('refreshToken', tokens.refresh, config.cookie.option);
     return res.status(200).json({
       code: 200,
       message: '토큰이 발급되었습니다.'
@@ -27,6 +23,7 @@ const login = async (req, res) => {
 }
 
 const loginChk = async (req, res) => {
+  // 해당 컨트롤러가 실행되었다는 것은 토큰 검증을 통과했다는 뜻
   res.status(200).json(req.decode);
 }
 
