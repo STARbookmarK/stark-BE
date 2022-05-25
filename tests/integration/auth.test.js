@@ -17,10 +17,12 @@ describe('login', () => {
       autoLogin: true
     };
     const res = await request(app).post('/api/login').send(loginData).expect(httpStatus.OK);
-    expect(res.body.tokens).toEqual({
-      access: expect.anything(),
-      refresh: expect.anything()
-    });
+    let tokens = {};
+    for(let c of res.header['set-cookie']){
+      tokens = { ...tokens, ...cookie.parse(c) }
+    }
+    expect(tokens).toHaveProperty('accessToken', expect.anything());
+    expect(tokens).toHaveProperty('refreshToken', expect.anything());
   });
   test('자동 로그인이 비활성화 된 상태에서 로그인 성공 시 200 을 반환해야 한다.', async () => {
     const loginData = {
@@ -29,10 +31,13 @@ describe('login', () => {
       autoLogin: false
     };
     const res = await request(app).post('/api/login').send(loginData).expect(httpStatus.OK);
-    expect(res.body.tokens).toEqual({
-      access: expect.anything(),
-      refresh: null
-    });
+    let tokens = {};
+    for(let c of res.header['set-cookie']){
+      tokens = { ...tokens, ...cookie.parse(c) }
+    }
+    expect(tokens).toHaveProperty('accessToken', expect.anything());
+    expect(tokens).not.toHaveProperty('refreshToken');
+
   });
   test('존재하지 않는 아이디가 입력되었을 경우 401 에러를 반환해야 한다.', async () => {
     const loginData = {
@@ -86,5 +91,19 @@ describe('login', () => {
       accessToken: accessToken,
       refreshToken: refreshToken
     });
+  });
+  test('로그아웃 시 토큰 쿠키를 모두 제거하고 200 을 반환해야 한다.', async () => {
+    const accessToken = tokenService.generateToken(testData.id, testData.nickname, 'accessToken', '1h');
+    const refreshToken = tokenService.generateToken(testData.id, testData.nickname, 'refreshToken', '1d');
+    const res = await request(app)
+      .get('/api/logout')
+      .set('Cookie', [`accessToken=${accessToken}`, `refreshToken=${refreshToken}`])
+      .expect(httpStatus.OK);
+    let tokens = {};
+    for(let c of res.header['set-cookie']){
+      tokens = { ...tokens, ...cookie.parse(c) }
+    }
+    expect(tokens).toHaveProperty('accessToken', '');
+    expect(tokens).toHaveProperty('refreshToken', '');
   });
 });

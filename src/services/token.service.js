@@ -14,11 +14,16 @@ const generateToken = (id, name, type, expires) => {
   });
 }
 
-const generateAuthToken = (id, name, autoLogin) => {
+const generateAuthToken = (id, name) => {
   return {
     access: generateToken(id, name, 'accessToken', config.jwt.expires.access),
-    refresh: autoLogin ? generateToken(id, name, 'refreshToken', config.jwt.expires.refresh) : null
+    refresh: generateToken(id, name, 'refreshToken', config.jwt.expires.refresh)
   };
+}
+
+const saveTokenInCookie = (tokens, autoLogin, res) => {
+  res.cookie('accessToken', tokens.access, config.cookie.option);
+  if(autoLogin) res.cookie('refreshToken', tokens.refresh, config.cookie.option);
 }
 
 const decodeToken = (token) => {
@@ -39,15 +44,15 @@ const verifyToken = (cookies, res) => {
   tokenExpDate = new Date(decode.exp*1000);
   if(tokenExpDate < currentDate) throw new ApiError(httpStatus.UNAUTHORIZED, '토큰이 만료되었습니다.');
   const { id, name } = decode;
-  const tokens = generateAuthToken(id, name, true);
-  res.cookie('accessToken', tokens.access, config.cookie.option);
-  res.cookie('refreshToken', tokens.refresh, config.cookie.option);
+  const tokens = generateAuthToken(id, name);
+  saveTokenInCookie(tokens, true, res);
   return decode;
 }
 
 export default {
   generateToken,
   generateAuthToken,
+  saveTokenInCookie,
   decodeToken,
   verifyToken
 };

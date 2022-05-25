@@ -1,17 +1,15 @@
 import authService from '../services/auth.service.js';
 import tokenService from '../services/token.service.js';
 import userService from '../services/user.service.js';
-import config from '../config/config.js';
 import catchAsync from '../utils/catchAsync.js';
 import httpStatus from 'http-status';
 
 const login = catchAsync(async (req, res) => {
   const { id, pw, autoLogin } = req.body;
   const name = await authService.login(id, pw);
-  const tokens = tokenService.generateAuthToken(id, name, autoLogin);
-  res.cookie('accessToken', tokens.access, config.cookie.option);
-  if (tokens.refresh) res.cookie('refreshToken', tokens.refresh, config.cookie.option);
-  return res.status(httpStatus.OK).json({ tokens });
+  const tokens = tokenService.generateAuthToken(id, name);
+  tokenService.saveTokenInCookie(tokens, autoLogin, res);
+  return res.status(httpStatus.OK).send();
 });
 
 // 해당 컨트롤러가 실행되었다는 것은 토큰 검증을 통과했다는 뜻
