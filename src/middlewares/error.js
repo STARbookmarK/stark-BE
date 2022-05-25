@@ -1,4 +1,4 @@
-import ApiError from '../utils/ApiError';
+import ApiError from '../utils/ApiError.js';
 import httpStatus from 'http-status';
 
 const errorConverter = (err, req, res, next) => {
