@@ -8,6 +8,7 @@ import monitorRouter from './routes/monitor.route.js';
 import config from './config/config.js';
 import ApiError from './utils/ApiError.js';
 import error from './middlewares/error.js';
+import httpStatus from 'http-status';
 
 // es6 __dirname not defined 
 const __dirname = path.resolve();
@@ -32,7 +33,7 @@ app.use('/', monitorRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  next(new ApiError(404, 'Not Found'));
+  next(new ApiError(httpStatus.NOT_FOUND, 'Not Found'));
 });
 
 // error handler
