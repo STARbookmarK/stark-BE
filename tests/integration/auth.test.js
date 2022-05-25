@@ -6,9 +6,9 @@ import httpStatus from 'http-status';
 
 describe('login', () => {
   const testData = {
-    id: 'wjdgus',
-    pw: 'wjdgus',
-    nickname: '정현'
+    id: 'root',
+    pw: 'root',
+    nickname: '관리자'
   };
   test('자동 로그인이 활성화 된 상태에서 로그인 성공 시 200 을 반환해야 한다.', async () => {
     const loginData = {
@@ -41,7 +41,7 @@ describe('login', () => {
   });
   test('존재하지 않는 아이디가 입력되었을 경우 401 에러를 반환해야 한다.', async () => {
     const loginData = {
-      id: 'IllllIIIlIllI',
+      id: '',
       pw: '',
       autoLogin: false
     };
@@ -105,5 +105,21 @@ describe('login', () => {
     }
     expect(tokens).toHaveProperty('accessToken', '');
     expect(tokens).toHaveProperty('refreshToken', '');
+  });
+  test('중복된 아이디가 존재할 경우 body.valid 에 false 를 담아 반환해야 한다.', async () => {
+    const res = await request(app).get(`/api/register/id/${testData.id}`).expect(httpStatus.OK);
+    expect(res.body.valid).toEqual(false);
+  });
+  test('중복된 아이디가 존재하지 않을 경우 body.valid 에 true 를 담아 반환해야 한다.', async () => {
+    const res = await request(app).get('/api/register/id/xxx').expect(httpStatus.OK);
+    expect(res.body.valid).toEqual(true);
+  });
+  test('중복된 닉네임이 존재할 경우 body.valid 에 false 를 담아 반환해야 한다.', async () => {
+    const res = await request(app).get(`/api/register/name/${encodeURI(testData.nickname)}`).expect(httpStatus.OK);
+    expect(res.body.valid).toEqual(false);
+  });
+  test('중복된 닉네임이 존재하지 않을 경우 body.valid 에 true 를 담아 반환해야 한다.', async () => {
+    const res = await request(app).get(`/api/register/name/xxx}`).expect(httpStatus.OK);
+    expect(res.body.valid).toEqual(true);
   });
 });
