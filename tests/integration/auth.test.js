@@ -10,13 +10,13 @@ describe('login', () => {
     pw: 'root',
     nickname: '관리자'
   };
-  test('자동 로그인이 활성화 된 상태에서 로그인 성공 시 200 을 반환해야 한다.', async () => {
+  test('자동 로그인이 활성화 된 상태에서 로그인 성공 시 201 을 반환해야 한다.', async () => {
     const loginData = {
       id: testData.id,
       pw: testData.pw,
       autoLogin: true
     };
-    const res = await request(app).post('/api/login').send(loginData).expect(httpStatus.OK);
+    const res = await request(app).post('/api/login').send(loginData).expect(httpStatus.CREATED);
     let tokens = {};
     for(let c of res.header['set-cookie']){
       tokens = { ...tokens, ...cookie.parse(c) }
@@ -24,13 +24,13 @@ describe('login', () => {
     expect(tokens).toHaveProperty('accessToken', expect.anything());
     expect(tokens).toHaveProperty('refreshToken', expect.anything());
   });
-  test('자동 로그인이 비활성화 된 상태에서 로그인 성공 시 200 을 반환해야 한다.', async () => {
+  test('자동 로그인이 비활성화 된 상태에서 로그인 성공 시 201 을 반환해야 한다.', async () => {
     const loginData = {
       id: testData.id,
       pw: testData.pw,
       autoLogin: false
     };
-    const res = await request(app).post('/api/login').send(loginData).expect(httpStatus.OK);
+    const res = await request(app).post('/api/login').send(loginData).expect(httpStatus.CREATED);
     let tokens = {};
     for(let c of res.header['set-cookie']){
       tokens = { ...tokens, ...cookie.parse(c) }

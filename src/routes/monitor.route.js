@@ -7,7 +7,7 @@ const router = express.Router();
 // db create 확인을 위한 임시 라우터
 
 router.get('/api/monitor', async (req, res) => {
-  try{
+  try {
     const user = await User.findAll({
       attributes: ['user_id', 'password', 'nickname', 'info']
     })

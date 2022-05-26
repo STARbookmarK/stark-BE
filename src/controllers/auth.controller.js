@@ -9,13 +9,13 @@ const login = catchAsync(async (req, res) => {
   const name = await authService.login(id, pw);
   const tokens = tokenService.generateAuthToken(id, name);
   tokenService.saveTokenInCookie(tokens, autoLogin, res);
-  return res.status(httpStatus.OK).send();
+  return res.status(httpStatus.CREATED).send();
 });
 
 // 해당 컨트롤러가 실행되었다는 것은 토큰 검증을 통과했다는 뜻
-const loginChk = async (req, res) => {
+const loginChk = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json(req.decode);
-}
+});
 
 const logout = (req, res) => {
   authService.logout(res);
@@ -24,7 +24,7 @@ const logout = (req, res) => {
 
 const register = catchAsync(async (req, res) => {
   await userService.createUser(req.body);
-  return res.status(httpStatus.OK).send();
+  return res.status(httpStatus.CREATED).send();
 });
 
 const idDupChk = catchAsync(async (req, res) => {

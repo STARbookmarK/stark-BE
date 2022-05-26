@@ -26,20 +26,16 @@ const saveTokenInCookie = (tokens, autoLogin, res) => {
   if(autoLogin) res.cookie('refreshToken', tokens.refresh, config.cookie.option);
 }
 
-const decodeToken = (token) => {
-  return jwt.decode(token, config.jwt.secret);
-}
-
 const verifyToken = (cookies, res) => {
   const { accessToken, refreshToken } = cookies;
   let decode, tokenExpDate;
   const currentDate = new Date();
-  decode = decodeToken(accessToken);
+  decode = jwt.decode(accessToken, config.jwt.secret);
   if(!decode || decode.tokenType !== 'accessToken') throw new ApiError(httpStatus.UNAUTHORIZED, '유효하지 않은 access 토큰입니다.');
   tokenExpDate = new Date(decode.exp*1000);
   if(tokenExpDate >= currentDate) return decode;
   // refresh token 이 유효하면 access, refresh token 재발급
-  decode = decodeToken(refreshToken);
+  decode = jwt.decode(refreshToken, config.jwt.secret);
   if(!decode || decode.tokenType !== 'refreshToken') throw new ApiError(httpStatus.UNAUTHORIZED, '유효하지 않은 access 토큰입니다.');
   tokenExpDate = new Date(decode.exp*1000);
   if(tokenExpDate < currentDate) throw new ApiError(httpStatus.UNAUTHORIZED, '토큰이 만료되었습니다.');
@@ -53,6 +49,5 @@ export default {
   generateToken,
   generateAuthToken,
   saveTokenInCookie,
-  decodeToken,
   verifyToken
 };
