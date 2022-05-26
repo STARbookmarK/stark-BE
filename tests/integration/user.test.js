@@ -32,4 +32,18 @@ describe('user routes', () => {
       .send(updateData)
       .expect(httpStatus.NO_CONTENT);
   });
+  test('현재 로그인 된 계정의 정보를 성공적으로 불러오면 200 를 반환해야 한다.', async () => {
+    const accessToken = tokenService.generateToken(testData.id, testData.nickname, 'accessToken', '1h');
+    const res = await request(app)
+      .get('/api/infos')
+      .set('Cookie', [`accessToken=${accessToken}`])
+      .expect(httpStatus.OK);
+    expect(res.body).toEqual({
+      nickname: expect.anything(),
+      info: expect.anything(),
+      show: expect.anything(),
+      hashtagShow: expect.anything(),
+      hashtagCategory: expect.anything()
+    });
+  });
 });

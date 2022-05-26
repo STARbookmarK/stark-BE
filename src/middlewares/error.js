@@ -3,7 +3,6 @@ import httpStatus from 'http-status';
 
 const errorConverter = (err, req, res, next) => {
   let error = err;
-  console.log(err);
   if(!(error instanceof ApiError)){
     const statusCode = error.statusCode ? httpStatus.BAD_REQUEST : httpStatus.INTERNAL_SERVER_ERROR;
     const message = error.message || httpStatus[statusCode];

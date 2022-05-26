@@ -12,7 +12,13 @@ const updatePassword = catchAsync(async (req, res) => {
   return res.status(httpStatus.NO_CONTENT).send();
 });
 
+const getUserInfo = catchAsync(async (req, res) => {
+  const user = await userService.getUserInfoById(req.decode.id);
+  return res.status(httpStatus.OK).json(user);
+});
+
 export default {
   updateInfo,
-  updatePassword
+  updatePassword,
+  getUserInfo
 };

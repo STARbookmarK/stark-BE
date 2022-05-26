@@ -18,6 +18,13 @@ const getUserByNickname = async (nickname) => {
   });
 }
 
+const getUserInfoById = async (id) => {
+  return User.findOne({
+    attributes: ['nickname', 'info', 'show', 'hashtagShow', 'hashtagCategory'],
+    where: { user_id: id }
+  });
+}
+
 const createUser = async (userBody) => {
   const { id, password, nickname, info } = userBody;
   return User.create({
@@ -41,6 +48,7 @@ const updatePasswordByIdAndPw = async (id, pw, newPw) => {
 export default {
   getUserById,
   getUserByNickname,
+  getUserInfoById,
   createUser,
   updateInfoById,
   updatePasswordByIdAndPw
