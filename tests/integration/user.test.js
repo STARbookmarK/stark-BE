@@ -41,9 +41,9 @@ describe('user routes', () => {
     expect(res.body).toEqual({
       nickname: expect.anything(),
       info: expect.anything(),
-      show: expect.anything(),
-      hashtagShow: expect.anything(),
-      hashtagCategory: expect.anything()
+      bookmarkshow: expect.anything(),
+      hashtagshow: expect.anything(),
+      hashtagcategory: expect.anything()
     });
   });
 });
