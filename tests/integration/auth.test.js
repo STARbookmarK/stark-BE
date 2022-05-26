@@ -4,7 +4,7 @@ import tokenService from '../../src/services/token.service.js';
 import cookie from 'cookie';
 import httpStatus from 'http-status';
 
-describe('login', () => {
+describe('auth routes', () => {
   const testData = {
     id: 'root',
     pw: 'root',

@@ -1,4 +1,7 @@
+import httpStatus from 'http-status';
 import models from '../models/index.js';
+import ApiError from '../utils/ApiError.js';
+
 const User = models.User;
 
 const getUserById = async (id) => {
@@ -25,8 +28,20 @@ const createUser = async (userBody) => {
   });
 }
 
+const updateInfoById = async (id, info) => {
+  if(!info) throw new ApiError(httpStatus.BAD_REQUEST);
+  await User.update({ info: info }, { where: { user_id: id } });
+}
+
+const updatePasswordByIdAndPw = async (id, pw, newPw) => {
+  if(!pw || !newPw) throw new ApiError(httpStatus.BAD_REQUEST);
+  await User.update({ password: newPw }, { where: { user_id: id, password: pw }});
+}
+
 export default {
   getUserById,
   getUserByNickname,
-  createUser
+  createUser,
+  updateInfoById,
+  updatePasswordByIdAndPw
 };

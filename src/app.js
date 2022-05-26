@@ -4,6 +4,7 @@ import path from 'path';
 import morgan from 'morgan';
 import cors from 'cors';
 import authRouter from './routes/auth.route.js';
+import userRouter from './routes/user.route.js';
 import monitorRouter from './routes/monitor.route.js';
 import config from './config/config.js';
 import ApiError from './utils/ApiError.js';
@@ -29,6 +30,7 @@ app.use(cors());
 
 // backend router
 app.use('/', authRouter);
+app.use('/', userRouter);
 app.use('/', monitorRouter);
 
 // catch 404 and forward to error handler

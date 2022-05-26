@@ -13,9 +13,9 @@ const login = catchAsync(async (req, res) => {
 });
 
 // 해당 컨트롤러가 실행되었다는 것은 토큰 검증을 통과했다는 뜻
-const loginChk = catchAsync(async (req, res) => {
+const loginChk = (req, res) => {
   res.status(httpStatus.OK).json(req.decode);
-});
+};
 
 const logout = (req, res) => {
   authService.logout(res);

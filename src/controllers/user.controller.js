@@ -1,0 +1,18 @@
+import catchAsync from '../utils/catchAsync.js';
+import userService from '../services/user.service.js';
+import httpStatus from 'http-status';
+
+const updateInfo = catchAsync(async (req, res) => {
+  await userService.updateInfoById(req.decode.id, req.body.info);
+  return res.status(httpStatus.NO_CONTENT).send();
+});
+
+const updatePassword = catchAsync(async (req, res) => {
+  await userService.updatePasswordByIdAndPw(req.decode.id, req.body.pw, req.body.newPw);
+  return res.status(httpStatus.NO_CONTENT).send();
+});
+
+export default {
+  updateInfo,
+  updatePassword
+};
