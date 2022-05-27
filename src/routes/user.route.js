@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.patch('/api/infos', authValidation, userController.updateInfo);
 router.patch('/api/password', authValidation, userController.updatePassword);
+router.patch('/api/show', authValidation, userController.updateShow);
 router.get('/api/infos', authValidation, userController.getUserInfo);
 
 export default router;

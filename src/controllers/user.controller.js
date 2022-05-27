@@ -12,6 +12,11 @@ const updatePassword = catchAsync(async (req, res) => {
   return res.status(httpStatus.NO_CONTENT).send();
 });
 
+const updateShow = catchAsync(async (req, res) => {
+  await userService.updateShowById(req.decode.id, req.body);
+  return res.status(httpStatus.NO_CONTENT).send();
+});
+
 const getUserInfo = catchAsync(async (req, res) => {
   const user = await userService.getUserInfoById(req.decode.id);
   return res.status(httpStatus.OK).json(user);
@@ -20,5 +25,6 @@ const getUserInfo = catchAsync(async (req, res) => {
 export default {
   updateInfo,
   updatePassword,
+  updateShow,
   getUserInfo
 };

@@ -45,11 +45,25 @@ const updatePasswordByIdAndPw = async (id, pw, newPw) => {
   await User.update({ password: newPw }, { where: { user_id: id, password: pw }});
 }
 
+const updateShowById = async (id, show) => {
+  const { bookmarkShow, hashtagShow, hashtagCategory } = show;
+  await User.update({
+    bookmarkshow: bookmarkShow,
+    hashtagshow: hashtagShow,
+    hashtagcategory: hashtagCategory
+  }, {
+    where: {
+      user_id: id
+    }
+  });
+}
+
 export default {
   getUserById,
   getUserByNickname,
   getUserInfoById,
   createUser,
   updateInfoById,
-  updatePasswordByIdAndPw
+  updatePasswordByIdAndPw,
+  updateShowById
 };
