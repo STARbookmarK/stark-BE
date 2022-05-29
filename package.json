@@ -30,6 +30,7 @@
     "@babel/core": "^7.18.0",
     "@babel/node": "^7.17.10",
     "@babel/preset-env": "^7.18.0",
+    "@faker-js/faker": "^7.1.0",
     "jest": "^28.1.0",
     "jsdoc": "^3.6.10",
     "jsdoc-route-plugin": "^0.1.0",

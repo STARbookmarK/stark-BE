@@ -10,7 +10,8 @@ export default {
       "password": process.env.SEQUELIZE_PASSWORD,
       "database": "starkDB",
       "host": "52.11.219.14",
-      "dialect": "mysql"
+      "dialect": "mysql",
+      "logging": false
     },
     "production": {
       "username": "root",

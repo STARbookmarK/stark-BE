@@ -35,6 +35,10 @@ const createUser = async (userBody) => {
   });
 }
 
+const deleteUser = (id) => {
+  User.destroy({ where: { user_id: id } });
+}
+
 const updateInfoById = async (id, info) => {
   if(!info) throw new ApiError(httpStatus.BAD_REQUEST);
   await User.update({ info: info }, { where: { user_id: id } });
@@ -42,6 +46,8 @@ const updateInfoById = async (id, info) => {
 
 const updatePasswordByIdAndPw = async (id, pw, newPw) => {
   if(!pw || !newPw) throw new ApiError(httpStatus.BAD_REQUEST);
+  const res = await getUserById(id);
+  if(res.dataValues.password !== pw) throw new ApiError(httpStatus.BAD_REQUEST);
   await User.update({ password: newPw }, { where: { user_id: id, password: pw }});
 }
 
@@ -63,6 +69,7 @@ export default {
   getUserByNickname,
   getUserInfoById,
   createUser,
+  deleteUser,
   updateInfoById,
   updatePasswordByIdAndPw,
   updateShowById
