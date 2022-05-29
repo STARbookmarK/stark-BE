@@ -19,6 +19,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ${{ secrets.WEB_PATH }}
+            git stash
             git pull origin develop
             git checkout develop
             npm install

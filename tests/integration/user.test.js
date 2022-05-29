@@ -44,7 +44,10 @@ describe('user routes', () => {
   });
   test('일치하지 않는 현재 비밀번호가 입력되면 400 을 반환해야 한다.', async () => {
     const accessToken = tokenService.generateToken(newUser.id, newUser.nickname, 'accessToken', '1h');
-    const updateData = { pw: '', newPw: newUser.password };
+    const updateData = {
+      pw: faker.internet.password(),
+      newPw: newUser.password
+    };
     await request(app)
       .patch('/api/password')
       .set('Cookie', [`accessToken=${accessToken}`])
