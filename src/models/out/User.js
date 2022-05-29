@@ -19,7 +19,8 @@ export default class User extends Model {
     },
     info: {
       type: DataTypes.STRING(45),
-      allowNull: true
+      allowNull: true,
+      defaultValue: ""
     },
     bookmarkshow: {
       type: DataTypes.TINYINT,

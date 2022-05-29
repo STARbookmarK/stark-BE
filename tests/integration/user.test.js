@@ -32,6 +32,18 @@ describe('user routes', () => {
       .send(updateData)
       .expect(httpStatus.NO_CONTENT);
   });
+  test('일치하지 않는 현재 비밀번호가 입력되면 400 을 반환해야 한다.', async () => {
+    const accessToken = tokenService.generateToken(testData.id, testData.nickname, 'accessToken', '1h');
+    const updateData = {
+      pw: '',
+      newPw: testData.pw
+    };
+    await request(app)
+      .patch('/api/password')
+      .set('Cookie', [`accessToken=${accessToken}`])
+      .send(updateData)
+      .expect(httpStatus.BAD_REQUEST);
+  });
   test('보기 방식이 성공적으로 변경되면 204 를 반환해야 한다.', async () => {
     const accessToken = tokenService.generateToken(testData.id, testData.nickname, 'accessToken', '1h');
     const updateData = {
@@ -52,6 +64,7 @@ describe('user routes', () => {
       .set('Cookie', [`accessToken=${accessToken}`])
       .expect(httpStatus.OK);
     expect(res.body).toEqual({
+      user_id: expect.anything(),
       nickname: expect.anything(),
       info: expect.anything(),
       bookmarkshow: expect.anything(),

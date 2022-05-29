@@ -20,7 +20,7 @@ const getUserByNickname = async (nickname) => {
 
 const getUserInfoById = async (id) => {
   return User.findOne({
-    attributes: ['nickname', 'info', 'bookmarkshow', 'hashtagshow', 'hashtagcategory'],
+    attributes: ['user_id', 'nickname', 'info', 'bookmarkshow', 'hashtagshow', 'hashtagcategory'],
     where: { user_id: id }
   });
 }

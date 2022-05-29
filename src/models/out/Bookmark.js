@@ -13,13 +13,18 @@ export default class Bookmark extends Model {
       type: DataTypes.STRING(45),
       allowNull: false
     },
+    address: {
+      type: DataTypes.STRING(45),
+      allowNull: true
+    },
     image: {
       type: DataTypes.STRING(45),
       allowNull: true
     },
     description: {
       type: DataTypes.STRING(45),
-      allowNull: true
+      allowNull: true,
+      defaultValue: ""
     },
     rate: {
       type: DataTypes.STRING(45),
