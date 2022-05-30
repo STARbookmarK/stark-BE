@@ -40,7 +40,7 @@ const deleteUser = (id) => {
 }
 
 const updateInfoById = async (id, info) => {
-  if(!info) throw new ApiError(httpStatus.BAD_REQUEST);
+  if(info === undefined || info === null) throw new ApiError(httpStatus.BAD_REQUEST);
   await User.update({ info: info }, { where: { user_id: id } });
 }
 
