@@ -8,9 +8,7 @@ const router = express.Router();
 
 router.get('/api/monitor', async (req, res) => {
   try {
-    const user = await User.findAll({
-      attributes: ['user_id', 'password', 'nickname', 'info']
-    })
+    const user = await User.findAll()
     return res.status(200).json({
       data: user
     });
