@@ -7,7 +7,7 @@ export default {
   "mysql": {
     "development": {
       "username": "root",
-      "password": process.env.SEQUELIZE_PASSWORD,
+      "password": process.env.SEQUELIZE_PASSWORD_DEV,
       "database": "starkDB",
       "host": "52.11.219.14",
       "dialect": "mysql",
@@ -15,7 +15,7 @@ export default {
     },
     "production": {
       "username": "root",
-      "password": process.env.SEQUELIZE_PASSWORD,
+      "password": process.env.SEQUELIZE_PASSWORD_PROD,
       "database": "starkDB",
       "host": "localhost",
       "dialect": "mysql",
