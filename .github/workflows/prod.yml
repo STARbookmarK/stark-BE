@@ -21,6 +21,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ${{ secrets.WEB_PATH }}
+            git stash
             git pull origin master
             git checkout master
             npm install
