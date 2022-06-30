@@ -5,6 +5,7 @@ export default class Category extends Model {
   static init(sequelize, DataTypes) {
   return super.init({
     category_id: {
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
@@ -37,6 +38,14 @@ export default class Category extends Model {
         fields: [
           { name: "category_id" },
           { name: "User_user_id" },
+        ]
+      },
+      {
+        name: "category_id_UNIQUE",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "category_id" },
         ]
       },
       {

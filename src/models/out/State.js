@@ -5,6 +5,7 @@ export default class State extends Model {
   static init(sequelize, DataTypes) {
   return super.init({
     state_id: {
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
@@ -37,6 +38,14 @@ export default class State extends Model {
         fields: [
           { name: "state_id" },
           { name: "User_user_id" },
+        ]
+      },
+      {
+        name: "state_id_UNIQUE",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "state_id" },
         ]
       },
       {

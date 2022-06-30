@@ -6,7 +6,7 @@ export default {
   "port": 8081,
   "mysql": {
     "development": {
-      "username": "root",
+      "username": "ubuntu",
       "password": process.env.SEQUELIZE_PASSWORD_DEV,
       "database": "starkDB",
       "host": "52.11.219.14",

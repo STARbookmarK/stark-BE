@@ -5,6 +5,7 @@ export default class Hashtag extends Model {
   static init(sequelize, DataTypes) {
   return super.init({
     hashtag_id: {
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
@@ -24,6 +25,7 @@ export default class Hashtag extends Model {
     Category_category_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0,
       primaryKey: true,
       references: {
         model: 'Category',
@@ -55,6 +57,14 @@ export default class Hashtag extends Model {
           { name: "hashtag_id" },
           { name: "Category_category_id" },
           { name: "User_user_id" },
+        ]
+      },
+      {
+        name: "hashtag_id_UNIQUE",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "hashtag_id" },
         ]
       },
       {

@@ -11,7 +11,8 @@ export default class User extends Model {
     },
     nickname: {
       type: DataTypes.STRING(45),
-      allowNull: false
+      allowNull: false,
+      unique: "nickname_UNIQUE"
     },
     password: {
       type: DataTypes.STRING(45),
@@ -50,6 +51,22 @@ export default class User extends Model {
         using: "BTREE",
         fields: [
           { name: "user_id" },
+        ]
+      },
+      {
+        name: "user_id_UNIQUE",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "user_id" },
+        ]
+      },
+      {
+        name: "nickname_UNIQUE",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "nickname" },
         ]
       },
     ]

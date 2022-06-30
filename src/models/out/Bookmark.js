@@ -5,11 +5,16 @@ export default class Bookmark extends Model {
   static init(sequelize, DataTypes) {
   return super.init({
     bookmark_id: {
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
     title: {
+      type: DataTypes.STRING(45),
+      allowNull: false
+    },
+    address: {
       type: DataTypes.STRING(45),
       allowNull: false
     },
@@ -49,6 +54,14 @@ export default class Bookmark extends Model {
         fields: [
           { name: "bookmark_id" },
           { name: "User_user_id" },
+        ]
+      },
+      {
+        name: "bookmark_id_UNIQUE",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "bookmark_id" },
         ]
       },
       {
