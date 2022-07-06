@@ -6,6 +6,7 @@ import cors from 'cors';
 import authRouter from './routes/auth.route.js';
 import userRouter from './routes/user.route.js';
 import monitorRouter from './routes/monitor.route.js';
+import docsRouter from './routes/docs.route.js';
 import config from './config/config.js';
 import ApiError from './utils/ApiError.js';
 import error from './middlewares/error.js';
@@ -29,6 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 // backend router
+app.use('/', docsRouter);
 app.use('/', authRouter);
 app.use('/', userRouter);
 app.use('/', monitorRouter);
