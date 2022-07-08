@@ -51,9 +51,16 @@ router.get('/api/register/name/:nickname', authController.nicknameDupChk);
  *            autoLogin: true
  *    responses:
  *      "201":
- *        description: Created
+ *        description: JWT 쿠키로 발급
+ *        headers:
+ *          Set-Cookie:
+ *            description: autoLogin=true 시, refreshToken 도 발급
+ *            schema:
+ *              type: string
+ *              example:
+ *                accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
  *      "401":
- *        description: Unauthorized
+ *        description: 인증 오류
  */
 
 export default router;

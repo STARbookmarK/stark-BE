@@ -18,6 +18,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            sudo su
             cd ${{ secrets.WEB_PATH }}
             git stash
             git pull origin develop

@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import authRouter from './routes/auth.route.js';
 import userRouter from './routes/user.route.js';
+import bookmarkRouter from './routes/bookmark.route.js';
 import monitorRouter from './routes/monitor.route.js';
 import docsRouter from './routes/docs.route.js';
 import config from './config/config.js';
@@ -33,6 +34,7 @@ app.use(cors());
 app.use('/', docsRouter);
 app.use('/', authRouter);
 app.use('/', userRouter);
+app.use('/', bookmarkRouter);
 app.use('/', monitorRouter);
 
 // catch 404 and forward to error handler
