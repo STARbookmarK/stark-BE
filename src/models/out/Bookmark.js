@@ -20,14 +20,14 @@ export default class Bookmark extends Model {
     },
     image: {
       type: DataTypes.STRING(45),
-      allowNull: true
+      allowNull: false
     },
     description: {
       type: DataTypes.STRING(45),
-      allowNull: true
+      allowNull: false
     },
     rate: {
-      type: DataTypes.STRING(45),
+      type: DataTypes.TINYINT,
       allowNull: true
     },
     User_user_id: {

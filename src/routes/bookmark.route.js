@@ -33,35 +33,48 @@ router.get('/api/bookmarks', authValidation, bookmarkController.getAllBookmark);
  *          type: array
  *          items:
  *            type: object
- *          example: [
- *            {
- *              id: 2,
- *              title: "google",
- *              address: "https://www.google.com/",
- *              image: null,
- *              description: null,
- *              rate: 5,
- *              hashtags: 'sample3|sample2|sample'
- *            },
- *            {
- *              id: 1,
- *              title: "naver",
- *              address: "https://www.naver.com/",
- *              image: null,
- *              description: null,
- *              rate: 1,
- *              hashtags: 'sample3'
- *            },
- *            {
- *              id: 4,
- *              title: "youtube",
- *              address: "https://www.youtube.com/",
- *              image: null,
- *              description: null,
- *              rate: 4,
- *              hashtags: ''
- *            }
- *          ]
+ *            properties:
+ *              id:
+ *                type: integer
+ *              title:
+ *                type: string
+ *              address:
+ *                type: string
+ *              description:
+ *                type: string
+ *              rate:
+ *                type: integer
+ *              hashtags:
+ *                type: string
+ *            example: [
+ *              {
+ *                id: 2,
+ *                title: "google",
+ *                address: "https://www.google.com/",
+ *                image: null,
+ *                description: null,
+ *                rate: 5,
+ *                hashtags: 'sample3|sample2|sample'
+ *              },
+ *              {
+ *                id: 1,
+ *                title: "naver",
+ *                address: "https://www.naver.com/",
+ *                image: null,
+ *                description: null,
+ *                rate: 1,
+ *                hashtags: 'sample3'
+ *              },
+ *              {
+ *                id: 4,
+ *                title: "youtube",
+ *                address: "https://www.youtube.com/",
+ *                image: null,
+ *                description: null,
+ *                rate: 4,
+ *                hashtags: ''
+ *              }
+ *            ]
  *      "401":
  *        description: (서비스 사용 중) 토큰 만료 or 삭제
  *      "500":
