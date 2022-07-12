@@ -1,7 +1,7 @@
 import express from 'express';
 import models from '../models/index.js';
 
-const User = models.User;
+const User = models.user;
 const router = express.Router();
 
 // db create 확인을 위한 임시 라우터
