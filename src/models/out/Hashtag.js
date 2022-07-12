@@ -1,7 +1,7 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class Hashtag extends Model {
+export default class hashtag extends Model {
   static init(sequelize, DataTypes) {
   return super.init({
     hashtag_id: {
@@ -16,19 +16,15 @@ export default class Hashtag extends Model {
     },
     star: {
       type: DataTypes.TINYINT,
-      allowNull: true
-    },
-    shared: {
-      type: DataTypes.TINYINT,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 0
     },
     Category_category_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 0,
       primaryKey: true,
       references: {
-        model: 'Category',
+        model: 'category',
         key: 'category_id'
       }
     },
@@ -37,13 +33,13 @@ export default class Hashtag extends Model {
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'User',
+        model: 'user',
         key: 'user_id'
       }
     }
   }, {
     sequelize,
-    tableName: 'Hashtag',
+    tableName: 'hashtag',
     timestamps: false,
     underscored: false,
     charset: 'utf8',

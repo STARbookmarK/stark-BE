@@ -2,7 +2,7 @@ import httpStatus from 'http-status';
 import models from '../models/index.js';
 import ApiError from '../utils/ApiError.js';
 
-const User = models.User;
+const User = models.user;
 
 const getUserById = async (id) => {
   return User.findOne({

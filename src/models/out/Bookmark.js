@@ -1,7 +1,7 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class Bookmark extends Model {
+export default class bookmark extends Model {
   static init(sequelize, DataTypes) {
   return super.init({
     bookmark_id: {
@@ -20,28 +20,36 @@ export default class Bookmark extends Model {
     },
     image: {
       type: DataTypes.STRING(45),
-      allowNull: false
+      allowNull: false,
+      defaultValue: ""
     },
     description: {
       type: DataTypes.STRING(45),
-      allowNull: false
+      allowNull: false,
+      defaultValue: ""
     },
     rate: {
       type: DataTypes.TINYINT,
-      allowNull: true
+      allowNull: false,
+      defaultValue: 0
+    },
+    shared: {
+      type: DataTypes.TINYINT,
+      allowNull: false,
+      defaultValue: 1
     },
     User_user_id: {
       type: DataTypes.STRING(45),
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'User',
+        model: 'user',
         key: 'user_id'
       }
     }
   }, {
     sequelize,
-    tableName: 'Bookmark',
+    tableName: 'bookmark',
     timestamps: false,
     underscored: false,
     charset: 'utf8',

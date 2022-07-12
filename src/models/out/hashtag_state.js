@@ -1,25 +1,16 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class hashtag_bookmark extends Model {
+export default class hashtag_state extends Model {
   static init(sequelize, DataTypes) {
   return super.init({
-    Bookmark_bookmark_id: {
+    State_state_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'bookmark',
-        key: 'bookmark_id'
-      }
-    },
-    Hashtag_hashtag_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'hashtag',
-        key: 'hashtag_id'
+        model: 'state',
+        key: 'state_id'
       }
     },
     User_user_id: {
@@ -30,10 +21,19 @@ export default class hashtag_bookmark extends Model {
         model: 'user',
         key: 'user_id'
       }
+    },
+    Hashtag_hashtag_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      references: {
+        model: 'hashtag',
+        key: 'hashtag_id'
+      }
     }
   }, {
     sequelize,
-    tableName: 'hashtag_bookmark',
+    tableName: 'hashtag_state',
     timestamps: false,
     underscored: false,
     charset: 'utf8',
@@ -44,30 +44,30 @@ export default class hashtag_bookmark extends Model {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "Bookmark_bookmark_id" },
-          { name: "Hashtag_hashtag_id" },
+          { name: "State_state_id" },
           { name: "User_user_id" },
-        ]
-      },
-      {
-        name: "fk_Hashtag_Bookmark_copy1_Bookmark1_idx",
-        using: "BTREE",
-        fields: [
-          { name: "Bookmark_bookmark_id" },
-        ]
-      },
-      {
-        name: "fk_Hashtag_Bookmark_copy1_Hashtag1_idx",
-        using: "BTREE",
-        fields: [
           { name: "Hashtag_hashtag_id" },
         ]
       },
       {
-        name: "fk_Hashtag_Bookmark_copy1_User1_idx",
+        name: "fk_Category_State_State1_idx",
+        using: "BTREE",
+        fields: [
+          { name: "State_state_id" },
+        ]
+      },
+      {
+        name: "fk_Category_State_User1_idx",
         using: "BTREE",
         fields: [
           { name: "User_user_id" },
+        ]
+      },
+      {
+        name: "fk_Category_State_Hashtag1_idx",
+        using: "BTREE",
+        fields: [
+          { name: "Hashtag_hashtag_id" },
         ]
       },
     ]
