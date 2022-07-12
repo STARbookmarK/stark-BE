@@ -16,3 +16,7 @@ src/
   app.js        # Express 앱
   index.js      # 앱 진입점
 ```
+
+## DB 구조
+
+![20220711_162946](https://user-images.githubusercontent.com/97517890/178211718-6731c5b3-b456-4bc8-91d4-04024bdaa3bb.png)
