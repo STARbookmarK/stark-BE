@@ -19,4 +19,5 @@ src/
 
 ## DB 구조
 
-![20220711_162946](https://user-images.githubusercontent.com/97517890/178211718-6731c5b3-b456-4bc8-91d4-04024bdaa3bb.png)
+![20220713_180906](https://user-images.githubusercontent.com/97517890/178696282-6f20a4c2-3064-4437-a097-2600d5ee0649.png)
+
