@@ -19,7 +19,7 @@ export default class bookmark extends Model {
       allowNull: false
     },
     image: {
-      type: DataTypes.STRING(45),
+      type: DataTypes.STRING(200),
       allowNull: false,
       defaultValue: ""
     },
@@ -38,7 +38,7 @@ export default class bookmark extends Model {
       allowNull: false,
       defaultValue: 1
     },
-    User_user_id: {
+    user_user_id: {
       type: DataTypes.STRING(45),
       allowNull: false,
       primaryKey: true,
@@ -61,7 +61,7 @@ export default class bookmark extends Model {
         using: "BTREE",
         fields: [
           { name: "bookmark_id" },
-          { name: "User_user_id" },
+          { name: "user_user_id" },
         ]
       },
       {
@@ -76,7 +76,7 @@ export default class bookmark extends Model {
         name: "fk_Bookmark_User_idx",
         using: "BTREE",
         fields: [
-          { name: "User_user_id" },
+          { name: "user_user_id" },
         ]
       },
     ]

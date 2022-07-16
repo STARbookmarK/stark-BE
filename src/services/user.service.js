@@ -3,6 +3,7 @@ import models from '../models/index.js';
 import ApiError from '../utils/ApiError.js';
 
 const User = models.user;
+const Category = models.category;
 
 const getUserById = async (id) => {
   return User.findOne({
@@ -27,11 +28,15 @@ const getUserInfoById = async (id) => {
 
 const createUser = async (userBody) => {
   const { id, password, nickname, info } = userBody;
-  return User.create({
+  User.create({
     user_id: id,
     password: password,
     nickname: nickname,
     info: info
+  });
+  Category.create({
+    title: 'default',
+    user_user_id: id
   });
 }
 

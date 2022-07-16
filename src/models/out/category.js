@@ -14,7 +14,7 @@ export default class category extends Model {
       type: DataTypes.STRING(45),
       allowNull: false
     },
-    User_user_id: {
+    user_user_id: {
       type: DataTypes.STRING(45),
       allowNull: false,
       primaryKey: true,
@@ -37,7 +37,7 @@ export default class category extends Model {
         using: "BTREE",
         fields: [
           { name: "category_id" },
-          { name: "User_user_id" },
+          { name: "user_user_id" },
         ]
       },
       {
@@ -52,7 +52,7 @@ export default class category extends Model {
         name: "fk_Category_User1_idx",
         using: "BTREE",
         fields: [
-          { name: "User_user_id" },
+          { name: "user_user_id" },
         ]
       },
     ]

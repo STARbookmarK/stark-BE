@@ -19,7 +19,7 @@ export default class hashtag extends Model {
       allowNull: false,
       defaultValue: 0
     },
-    Category_category_id: {
+    category_category_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
@@ -28,7 +28,7 @@ export default class hashtag extends Model {
         key: 'category_id'
       }
     },
-    User_user_id: {
+    user_user_id: {
       type: DataTypes.STRING(45),
       allowNull: false,
       primaryKey: true,
@@ -51,8 +51,8 @@ export default class hashtag extends Model {
         using: "BTREE",
         fields: [
           { name: "hashtag_id" },
-          { name: "Category_category_id" },
-          { name: "User_user_id" },
+          { name: "category_category_id" },
+          { name: "user_user_id" },
         ]
       },
       {
@@ -67,14 +67,14 @@ export default class hashtag extends Model {
         name: "fk_Hashtag_Category1_idx",
         using: "BTREE",
         fields: [
-          { name: "Category_category_id" },
+          { name: "category_category_id" },
         ]
       },
       {
         name: "fk_Hashtag_User1_idx",
         using: "BTREE",
         fields: [
-          { name: "User_user_id" },
+          { name: "user_user_id" },
         ]
       },
     ]

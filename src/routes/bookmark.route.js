@@ -5,6 +5,7 @@ import authValidation from '../middlewares/auth.js';
 const router = express.Router();
 
 router.get('/api/bookmarks', authValidation, bookmarkController.getAllBookmark);
+router.post('/api/bookmarks', authValidation, bookmarkController.addBookmark);
 
 /**
  * @swagger
@@ -75,6 +76,57 @@ router.get('/api/bookmarks', authValidation, bookmarkController.getAllBookmark);
  *                hashtags: ''
  *              }
  *            ]
+ *      "401":
+ *        description: (서비스 사용 중) 토큰 만료 or 삭제
+ *      "500":
+ *        description: 서버 오류 
+ */
+
+/**
+ * @swagger
+ * /api/bookmarks:
+ *  post:
+ *    summary: 현재 로그인 된 유저의 북마크 추가 API
+ *    tags: [bookmark]
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: body
+ *        required: true
+ *        schema:
+ *          type: object
+ *          required:
+ *            - title
+ *            - address
+ *            - description
+ *            - rate
+ *            - shared
+ *            - hashtags
+ *          properties:
+ *            title:
+ *              type: string
+ *            address:
+ *              type: string
+ *            description:
+ *              type: string
+ *            rate:
+ *              type: integer
+ *            shared:
+ *              type: integer
+ *            hashtags:
+ *              type: array
+ *          example:
+ *            title: naver
+ *            address: https://www.naver.com
+ *            description: 네이버
+ *            rate: 5
+ *            shared: 1
+ *            hashtags: [web, naver]
+ *    responses:
+ *      "201":
+ *        description: 북마크 추가됨
+ *      "412":
+ *        description: 북마크 추가 실패 (예 - 중복된 address 입력)
  *      "401":
  *        description: (서비스 사용 중) 토큰 만료 or 삭제
  *      "500":
