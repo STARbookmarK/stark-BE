@@ -224,6 +224,8 @@ router.patch('/api/bookmarks', authValidation, bookmarkController.editBookmark);
  *            - shared
  *            - hashtags
  *          properties:
+ *            id:
+ *              type: intger
  *            title:
  *              type: string
  *            address:
