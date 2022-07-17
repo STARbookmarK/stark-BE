@@ -8,6 +8,7 @@ router.get('/api/bookmarks', authValidation, bookmarkController.getAllBookmark);
 router.post('/api/bookmarks', authValidation, bookmarkController.addBookmark);
 router.patch('/api/bookmarks', authValidation, bookmarkController.editBookmark);
 router.delete('/api/bookmarks', authValidation, bookmarkController.deleteBookmark);
+router.get('/api/hashtags', authValidation, bookmarkController.getAllHashtag);
 
 /**
  * @swagger
@@ -20,7 +21,7 @@ router.delete('/api/bookmarks', authValidation, bookmarkController.deleteBookmar
  * @swagger
  * /api/bookmarks:
  *  get:
- *    summary: 현재 로그인 된 유저의 모든 북마크 가져오는 API
+ *    summary: 현재 로그인 된 유저의 모든 북마크 요청 API
  *    tags: [bookmark]
  *    produces:
  *      - application/json
@@ -279,6 +280,51 @@ router.delete('/api/bookmarks', authValidation, bookmarkController.deleteBookmar
  *    responses:
  *      "204":
  *        description: 북마크 삭제됨
+ *      "401":
+ *        description: (서비스 사용 중) 토큰 만료 or 삭제
+ *      "500":
+ *        description: 서버 오류 
+ */
+
+/**
+ * @swagger
+ * /api/hashtags:
+ *  get:
+ *    summary: 현재 로그인 된 유저의 모든 해시태그 요청 API
+ *    tags: [bookmark]
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: cookie
+ *        name: accessToken
+ *        description: accessToken 을 쿠키에 지닌 상태로 호출
+ *        required: true
+ *    responses:
+ *      "200":
+ *        description: 북마크 목록 json 형태로 반환
+ *        schema:
+ *          type: array
+ *          items:
+ *            type: object
+ *            properties:
+ *              title:
+ *                type: string
+ *              star:
+ *                type: integer
+ *              category:
+ *                type: string
+ *            example: [
+ *              {
+ *                title: "web",
+ *                star: 1,
+ *                category: "default"
+ *              },
+ *              {
+ *                title: "mysql",
+ *                star: 0,
+ *                category: "default"
+ *              },
+ *            ]
  *      "401":
  *        description: (서비스 사용 중) 토큰 만료 or 삭제
  *      "500":

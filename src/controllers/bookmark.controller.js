@@ -23,9 +23,15 @@ const deleteBookmark = catchAsync(async (req, res) => {
   return res.status(httpStatus.NO_CONTENT).send();
 });
 
+const getAllHashtag = catchAsync(async (req, res) => {
+  const hashtags = await bookmarkService.getAllHashtag(req.decode.id);
+  return res.status(httpStatus.OK).json(hashtags);
+});
+
 export default {
   getAllBookmark,
   addBookmark,
   editBookmark,
-  deleteBookmark
+  deleteBookmark,
+  getAllHashtag
 };

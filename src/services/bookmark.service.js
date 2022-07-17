@@ -203,7 +203,7 @@ const editBookmark = async (user_id, reqBody) => {
     });
   }
   // 3. 사용되지 않는 해시태그 제거
-  //await removeUnusedHashtag(user_id);
+  await removeUnusedHashtag(user_id);
 }
 
 const deleteBookmark = async (user_id, bookmark_id) => {
@@ -220,24 +220,48 @@ const deleteBookmark = async (user_id, bookmark_id) => {
     }
   });
   // 3. 사용되지 않는 해시태그 제거
-  //await removeUnusedHashtag(user_id);
+  await removeUnusedHashtag(user_id);
 }
 
 const removeUnusedHashtag = async (user_id) => {
   sequelize.query(`
-    DELETE FROM hashtag
-    WHERE NOT EXISTS
-      (SELECT hashtag_id
-      FROM   hashtag
-      WHERE  user_user_id = '${user_id}');
+    DELETE
+    FROM hashtag AS A
+    WHERE
+      A.user_user_id = '${user_id}' AND
+      NOT EXISTS
+        (SELECT *
+        FROM   hashtag_bookmark AS B
+        WHERE  B.hashtag_hashtag_id = A.hashtag_id);
   `, {
     type: Sequelize.QueryTypes.DELETE
   })
+}
+
+const getAllHashtag = async (user_id) => {
+  const result = await sequelize.query(`
+    SELECT
+      Any_value(A.title) AS title,
+      Any_value(A.star) AS star,
+      Any_value(
+        (SELECT title
+        FROM category AS C
+        WHERE C.category_id = A.category_category_id)
+      ) AS category
+    FROM
+      hashtag AS A
+    WHERE
+      A.user_user_id = '${user_id}';
+  `, {
+    type: Sequelize.QueryTypes.SELECT
+  });
+  return result; 
 }
 
 export default {
   getAllBookmark,
   addBookmark,
   editBookmark,
-  deleteBookmark
+  deleteBookmark,
+  getAllHashtag
 };
