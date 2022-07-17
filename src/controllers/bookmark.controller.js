@@ -8,12 +8,18 @@ const getAllBookmark = catchAsync(async (req, res) => {
 });
 
 const addBookmark = catchAsync(async (req, res) => {
-  const status = await bookmarkService.addBookmark(req.decode.id, req.body)
+  const status = await bookmarkService.addBookmark(req.decode.id, req.body);
   if(status) return res.status(httpStatus.CREATED).send();
   else return res.status(httpStatus.PRECONDITION_FAILED).send();
 });
 
+const editBookmark = catchAsync(async (req, res) => {
+  await bookmarkService.editBookmark(req.decode.id, req.body);
+  return res.status(httpStatus.NO_CONTENT).send();
+});
+
 export default {
   getAllBookmark,
-  addBookmark
+  addBookmark,
+  editBookmark
 };

@@ -46,7 +46,9 @@ const getAllBookmark = async (id) => {
 }
 
 const addBookmark = async (id, reqBody) => {
-  const {title, address, description, rate, shared, hashtags} = reqBody;
+  let {title, address, description, rate, shared, hashtags} = reqBody;
+  hashtags = hashtags.filter(el => el !== '');
+  hashtags = Array.from(new Set(hashtags));
   // 북마크 썸네일 크롤링
   let image = '';
   const body = await rp(address);
@@ -107,10 +109,14 @@ const addBookmark = async (id, reqBody) => {
         INSERT INTO hashtag_bookmark
         VALUES  ((SELECT bookmark_id
                   FROM   bookmark
-                  WHERE  address = '${address}'),
+                  WHERE
+                    address = '${address}' AND
+                    user_user_id = '${id}'),
                 (SELECT hashtag_id
                   FROM   hashtag
-                  WHERE  title = '${hashtag}'),
+                  WHERE
+                    title = '${hashtag}' AND
+                    user_user_id = '${id}'),
                 '${id}');
       `, {
         type: Sequelize.QueryTypes.INSERT
@@ -120,7 +126,96 @@ const addBookmark = async (id, reqBody) => {
   return true;
 }
 
+const editBookmark = async (user_id, reqBody) => {
+  let {id, title, address, description, rate, shared, hashtags} = reqBody;
+  hashtags = hashtags.filter(el => el !== '');
+  hashtags = Array.from(new Set(hashtags));
+  Bookmark.update({
+    title: title,
+    description: description,
+    rate: rate,
+    shared: shared
+  }, {
+    where: {
+      address: address,
+      user_user_id: user_id
+    }
+  });
+  // 해시태그 업데이트
+  // 1. 존재하는 해시태그_북마크 관계 전부 제거
+  sequelize.query(`
+    DELETE
+    FROM   hashtag_bookmark
+    WHERE  bookmark_bookmark_id =
+      (SELECT bookmark_id
+      FROM   bookmark
+      WHERE  address = '${address}'
+      AND    user_user_id = '${user_id}');
+  `, {
+    type: Sequelize.QueryTypes.DELETE
+  });
+  // 2. 해시태그, 해시태그_북마크 관계 추가
+  if(hashtags){
+    hashtags.forEach(hashtag => {
+      // 해시태그 추가
+      sequelize.query(`
+        INSERT INTO hashtag
+          (title,
+          star,
+          category_category_id,
+          user_user_id)
+        SELECT
+          '${hashtag}',
+          '1',
+          (SELECT
+            category_id
+          FROM
+            category
+          WHERE
+            title = 'default' AND
+            user_user_id = '${user_id}'),
+          '${user_id}'
+        WHERE NOT EXISTS
+          (SELECT
+            *
+          FROM
+            hashtag
+          WHERE
+            user_user_id = '${user_id}' AND
+            title = '${hashtag}');
+      `, {
+        type: Sequelize.QueryTypes.INSERT
+      });
+      // 해시태그_북마크 테이블 관계 추가
+      sequelize.query(`
+        INSERT INTO hashtag_bookmark
+        VALUES  ('${id}',
+                (SELECT hashtag_id
+                  FROM   hashtag
+                  WHERE
+                    title = '${hashtag}' AND
+                    user_user_id = '${user_id}'),
+                '${user_id}');
+      `, {
+        type: Sequelize.QueryTypes.INSERT
+      })
+    });
+  }
+  /* 3. 사용되지 않는 해시태그는 전부 삭제
+  sequelize.query(`
+    DELETE FROM hashtag
+    WHERE NOT EXISTS
+      (SELECT hashtag_id
+      FROM   hashtag
+      WHERE  user_user_id = '${user_id}');
+  `, {
+    type: Sequelize.QueryTypes.DELETE
+  })
+  */
+}
+
 export default {
   getAllBookmark,
-  addBookmark
+  addBookmark,
+  editBookmark
 };
