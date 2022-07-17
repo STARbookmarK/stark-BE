@@ -18,8 +18,14 @@ const editBookmark = catchAsync(async (req, res) => {
   return res.status(httpStatus.NO_CONTENT).send();
 });
 
+const deleteBookmark = catchAsync(async (req, res) => {
+  await bookmarkService.deleteBookmark(req.decode.id, req.body.id);
+  return res.status(httpStatus.NO_CONTENT).send();
+});
+
 export default {
   getAllBookmark,
   addBookmark,
-  editBookmark
+  editBookmark,
+  deleteBookmark
 };

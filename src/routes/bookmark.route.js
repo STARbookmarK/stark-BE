@@ -7,6 +7,7 @@ const router = express.Router();
 router.get('/api/bookmarks', authValidation, bookmarkController.getAllBookmark);
 router.post('/api/bookmarks', authValidation, bookmarkController.addBookmark);
 router.patch('/api/bookmarks', authValidation, bookmarkController.editBookmark);
+router.delete('/api/bookmarks', authValidation, bookmarkController.deleteBookmark);
 
 /**
  * @swagger
@@ -225,7 +226,7 @@ router.patch('/api/bookmarks', authValidation, bookmarkController.editBookmark);
  *            - hashtags
  *          properties:
  *            id:
- *              type: intger
+ *              type: integer
  *            title:
  *              type: string
  *            address:
@@ -249,6 +250,35 @@ router.patch('/api/bookmarks', authValidation, bookmarkController.editBookmark);
  *    responses:
  *      "204":
  *        description: 북마크 수정됨
+ *      "401":
+ *        description: (서비스 사용 중) 토큰 만료 or 삭제
+ *      "500":
+ *        description: 서버 오류 
+ */
+
+/**
+ * @swagger
+ * /api/bookmarks:
+ *  delete:
+ *    summary: 현재 로그인 된 유저의 특정 북마크 삭제 API
+ *    tags: [bookmark]
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: body
+ *        required: true
+ *        schema:
+ *          type: object
+ *          required:
+ *            - id
+ *          properties:
+ *            id:
+ *              type: integer
+ *          example:
+ *            id: 3
+ *    responses:
+ *      "204":
+ *        description: 북마크 삭제됨
  *      "401":
  *        description: (서비스 사용 중) 토큰 만료 or 삭제
  *      "500":

@@ -9,6 +9,7 @@ const mysql = config.mysql[env];
 const sequelize = new Sequelize(mysql.database, mysql.username, mysql.password, mysql);
 
 const Bookmark = models.bookmark;
+const Hashtag_bookmark = models.hashtag_bookmark;
 
 const getAllBookmark = async (id) => {
   const result = await sequelize.query(`
@@ -56,7 +57,7 @@ const addBookmark = async (id, reqBody) => {
   const arr = [];
   $('img').map((i, el) => arr.push(el.attribs.src));
   image = arr.filter(el => el !== undefined)[0];
-  image = image.length > 200 ? '' : image;
+  image = (image && image.length) > 200 ? '' : image;
   // 중복된 주소가 존재할 경우 북마크 추가 불가
   const tmp = await Bookmark.findOne({
     where: { user_user_id: id, address: address }
@@ -201,7 +202,28 @@ const editBookmark = async (user_id, reqBody) => {
       })
     });
   }
-  /* 3. 사용되지 않는 해시태그는 전부 삭제
+  // 3. 사용되지 않는 해시태그 제거
+  //await removeUnusedHashtag(user_id);
+}
+
+const deleteBookmark = async (user_id, bookmark_id) => {
+  // 1. 삭제하려는 북마크와 연관된 해시태그 관계 모두 제거
+  Hashtag_bookmark.destroy({
+    where: {
+      bookmark_bookmark_id: bookmark_id
+    }
+  });
+  // 2. 북마크 삭제
+  Bookmark.destroy({
+    where: {
+      bookmark_id: bookmark_id
+    }
+  });
+  // 3. 사용되지 않는 해시태그 제거
+  //await removeUnusedHashtag(user_id);
+}
+
+const removeUnusedHashtag = async (user_id) => {
   sequelize.query(`
     DELETE FROM hashtag
     WHERE NOT EXISTS
@@ -211,11 +233,11 @@ const editBookmark = async (user_id, reqBody) => {
   `, {
     type: Sequelize.QueryTypes.DELETE
   })
-  */
 }
 
 export default {
   getAllBookmark,
   addBookmark,
-  editBookmark
+  editBookmark,
+  deleteBookmark
 };
